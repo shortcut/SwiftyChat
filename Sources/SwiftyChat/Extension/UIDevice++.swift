@@ -6,8 +6,8 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
-
 public extension UIDevice {
     
     static var isLandscape: Bool {
@@ -21,3 +21,6 @@ public extension UIDevice {
     }
     
 }
+#endif
+
+

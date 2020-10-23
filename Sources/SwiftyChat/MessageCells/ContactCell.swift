@@ -39,10 +39,19 @@ public struct ContactCell<Message: ChatMessage>: View {
         cellStyle.cellWidth(size)
     }
     
+    @ViewBuilder private func _contactImage(image: LegacyImage) -> Image {
+        #if os(iOS)
+        Image(uiImage: image)
+        #elseif os(macOS)
+        Image(nsImage: image)
+        #endif
+    }
+    
     // MARK: - Image
     @ViewBuilder private var contactImage: some View {
         if let contactImage = contact.image {
-            Image(uiImage: contactImage)
+//            Image(uiImage: contactImage)
+            _contactImage(image: contactImage)
                 .resizable()
                 .frame(
                     width: imageStyle.imageSize.width,
@@ -72,14 +81,14 @@ public struct ContactCell<Message: ChatMessage>: View {
         HStack {
             
             ForEach(buttons.indices) { idx in
-                Button(buttons[idx].title) {}
+                Button(self.buttons[idx].title) {}
                     .buttonStyle(BorderlessButtonStyle())
                     .simultaneousGesture(
-                        TapGesture().onEnded(buttons[idx].action)
+                        TapGesture().onEnded(self.buttons[idx].action)
                     )
                     .frame(maxWidth: .infinity)
                 
-                if idx != buttons.count - 1 {
+                if idx != self.buttons.count - 1 {
                     Divider()
                 }
             }
@@ -89,6 +98,7 @@ public struct ContactCell<Message: ChatMessage>: View {
     }
     
     // MARK: - Body
+    #warning("handle systemimage globally")
     public var body: some View {
         
         VStack(spacing: 0) {
@@ -97,8 +107,8 @@ public struct ContactCell<Message: ChatMessage>: View {
                 contactImage
                 fullNameLabel
                 Spacer()
-                Image(systemName: "chevron.right")
-                    .shadow(color: .secondary, radius: 1)
+//                Image(systemName: "chevron.right")
+//                    .shadow(color: .secondary, radius: 1)
                 
             }.padding()
             

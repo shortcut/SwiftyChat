@@ -49,7 +49,7 @@ public class ChatMessageCellStyle: ObservableObject {
                 textColor: .white,
                 font: Font.custom("Futura", size: 17)
             ),
-            cellBackgroundColor: Color(UIColor.systemPink).opacity(0.8)
+            cellBackgroundColor: Color(LegacyColor.systemPink).opacity(0.8)
         ),
         outgoingTextStyle: TextCellStyle = TextCellStyle(
             textStyle: CommonTextStyle(

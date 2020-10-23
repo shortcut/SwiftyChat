@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 extension View {
     dynamic func dismissKeyboardOnTappingOutside() -> some View {
         return ModifiedContent(content: self, modifier: DismissKeyboardOnTappingOutside())
@@ -27,3 +28,4 @@ public struct DismissKeyboardOnTappingOutside: ViewModifier {
         }
     }
 }
+#endif

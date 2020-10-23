@@ -24,10 +24,10 @@ public struct ImageCell<Message: ChatMessage>: View {
         style.imageCellStyle
     }
     
-    @ViewBuilder private var imageView: some View {
+    private var imageView: some View {
         switch imageLoadingType {
-        case .local(let image): localImage(uiImage: image)
-        case .remote(let remoteUrl): remoteImage(url: remoteUrl)
+        case .local(let image): return localImage(uiImage: image).embedInAnyView()
+        case .remote(let remoteUrl): return remoteImage(url: remoteUrl).embedInAnyView()
         }
     }
     
@@ -35,13 +35,15 @@ public struct ImageCell<Message: ChatMessage>: View {
         imageView
     }
     
+    #warning("handle uiImage - nsImage globally")
     // MARK: - case Local Image
-    @ViewBuilder private func localImage(uiImage: UIImage) -> some View {
+//    @ViewBuilder
+    private func localImage(uiImage: LegacyImage) -> some View {
         let width = uiImage.size.width
         let height = uiImage.size.height
         let isLandscape = width > height
         
-        Image(uiImage: uiImage)
+        return Image(nsImage: uiImage)
             .resizable()
             .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
             .frame(width: imageWidth, height: isLandscape ? nil : imageWidth)
@@ -61,7 +63,8 @@ public struct ImageCell<Message: ChatMessage>: View {
     }
     
     // MARK: - case Remote Image
-    @ViewBuilder private func remoteImage(url: URL) -> some View {
+//    @ViewBuilder
+    private func remoteImage(url: URL) -> some View {
         /**
          KFImage(url)
          .onSuccess(perform: { (result) in
@@ -72,7 +75,7 @@ public struct ImageCell<Message: ChatMessage>: View {
          
          So for now we use fixed width & scale height properly.
          */
-        KFImage(url)
+        return KFImage(url)
             .resizable()
             .scaledToFill()
             .frame(width: imageWidth)

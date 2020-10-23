@@ -43,30 +43,30 @@ public struct QuickReplyCell: View {
             ForEach(0..<quickReplies.count) { idx in
 
                 Button(action: {}) {
-                    Text(quickReplies[idx].title)
-                        .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
-                        .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
-                        .padding(cellStyle.itemPadding)
-                        .frame(height: cellStyle.itemHeight)
-                        .background(itemBackground(for: idx))
-                        .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
+                    Text(self.quickReplies[idx].title)
+                        .fontWeight(idx == self.selectedIndex ? self.cellStyle.selectedItemFontWeight : self.cellStyle.unselectedItemFontWeight)
+                        .font(idx == self.selectedIndex ? self.cellStyle.selectedItemFont : self.cellStyle.unselectedItemFont)
+                        .padding(self.cellStyle.itemPadding)
+                        .frame(height: self.cellStyle.itemHeight)
+                        .background(self.itemBackground(for: idx))
+                        .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
                         .overlay(
-                            RoundedRectangle(cornerRadius: cellStyle.itemCornerRadius)
+                            RoundedRectangle(cornerRadius: self.cellStyle.itemCornerRadius)
                                 .stroke(
-                                    colors(selectedIndex: selectedIndex)[idx],
-                                    lineWidth: cellStyle.itemBorderWidth
+                                    self.colors(selectedIndex: self.selectedIndex)[idx],
+                                    lineWidth: self.cellStyle.itemBorderWidth
                                 )
                                 .shadow(
-                                    color: cellStyle.itemShadowColor,
-                                    radius: cellStyle.itemShadowRadius
+                                    color: self.cellStyle.itemShadowColor,
+                                    radius: self.cellStyle.itemShadowRadius
                                 )
                         )
                 }
                 .simultaneousGesture(
                     TapGesture().onEnded { _ in
-                        selectedIndex = idx
-                        isDisabled = true
-                        quickReplySelected(quickReplies[idx])
+                        self.selectedIndex = idx
+                        self.isDisabled = true
+                        self.quickReplySelected(self.quickReplies[idx])
                     }
                 )
                 

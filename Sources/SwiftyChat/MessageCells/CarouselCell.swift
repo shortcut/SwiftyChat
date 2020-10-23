@@ -41,10 +41,10 @@ public struct CarouselCell<Message: ChatMessage>: View {
                 ForEach(carouselItems, id: \.id) { item in
                     CarouselItemView(
                         item: item,
-                        size: size,
-                        isSender: message.isSender
+                        size: self.size,
+                        isSender: self.message.isSender
                     ) { button in
-                        onCarouselItemAction(button, message)
+                        self.onCarouselItemAction(button, self.message)
                     }
                 }
             }
@@ -95,15 +95,15 @@ public struct CarouselItemView: View {
             
             HStack {
                 ForEach(item.buttons) { (button) in
-                    Button(action: { callback(button) }) {
+                    Button(action: { self.callback(button) }) {
                         Text(button.title)
-                            .fontWeight(cellStyle.buttonTitleFontWeight)
-                            .font(cellStyle.buttonFont)
-                            .foregroundColor(cellStyle.buttonTitleColor)
+                            .fontWeight(self.cellStyle.buttonTitleFontWeight)
+                            .font(self.cellStyle.buttonFont)
+                            .foregroundColor(self.cellStyle.buttonTitleColor)
                     }
                     .buttonStyle(
                         CarouselItemButtonStyle(
-                            backgroundColor: cellStyle.buttonBackgroundColor
+                            backgroundColor: self.cellStyle.buttonBackgroundColor
                         )
                     )
                 }

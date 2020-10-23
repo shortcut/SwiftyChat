@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import class UIKit.UIDevice
 import SwiftUI
+#if os(iOS)
+import class UIKit.UIDevice
 
 final class OrientationInfo: ObservableObject {
     enum Orientation {
@@ -76,3 +77,4 @@ struct DeviceOrientationBasedView<Content: View>: View {
         }
     }
 }
+#endif

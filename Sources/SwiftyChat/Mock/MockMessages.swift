@@ -6,7 +6,11 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-import class UIKit.UIImage
+//import class UIKit.UIImage
+#if os(iOS)
+import UIKit
+#endif
+
 import Foundation
 
 public struct MockMessages {
@@ -40,7 +44,7 @@ public struct MockMessages {
     // MARK: - Concrete model for Contact
     private struct ContactRow: ContactItem {
         var displayName: String
-        var image: UIImage?
+        var image: LegacyImage?
         var initials: String = ""
         var phoneNumbers: [String] = []
         var emails: [String] = []
@@ -95,12 +99,12 @@ public struct MockMessages {
         public var userName: String
         
         /// User's chat profile image, considered if `avatarURL` is nil
-        public var avatar: UIImage?
+        public var avatar: LegacyImage?
         
         /// User's chat profile image URL
         public var avatarURL: URL?
 
-        public init(userName: String, avatarURL: URL? = nil, avatar: UIImage? = nil) {
+        public init(userName: String, avatarURL: URL? = nil, avatar: LegacyImage? = nil) {
             self.userName = userName
             self.avatar = avatar
             self.avatarURL = avatarURL
@@ -123,7 +127,7 @@ public struct MockMessages {
         [sender, chatbot].randomElement()!
     }
     
-    public static var mockImages: [UIImage] = []
+    public static var mockImages: [LegacyImage] = []
     
     public static func generateMessage(kind: MockMessages.Kind) -> ChatMessageItem {
         let randomUser = Self.randomUser

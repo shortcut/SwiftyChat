@@ -9,6 +9,42 @@
 import SwiftUI
 import MapKit
 
+#if os(macOS)
+public struct MapView: NSViewRepresentable {
+    
+    public var coordinate: CLLocationCoordinate2D
+    public var isScrollEnabled: Bool = false
+    public var isZoomEnabled: Bool = false
+    
+    public func makeNSView(context: Context) -> some NSView {
+        let mapView = MKMapView()
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+        mapView.setCenter(annotation.coordinate, animated: true)
+        mapView.isZoomEnabled = isZoomEnabled
+        mapView.isScrollEnabled = isScrollEnabled
+        centerMapOnLocation(coordinate, mapView: mapView)
+        return mapView
+    }
+    
+    public func updateNSView(_ nsView: NSViewType, context: Context) {
+        
+    }
+    
+    // To play with zoom level, change regionRadius
+    private func centerMapOnLocation(_ location: CLLocationCoordinate2D, mapView: MKMapView) {
+        let regionRadius: CLLocationDistance = 5000
+        let coordinateRegion = MKCoordinateRegion(
+            center: location,
+            latitudinalMeters: regionRadius * 2.0,
+            longitudinalMeters: regionRadius * 2.0
+        )
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+}
+#elseif os(iOS)
 public struct MapView: UIViewRepresentable {
 
     public var coordinate: CLLocationCoordinate2D
@@ -42,3 +78,4 @@ public struct MapView: UIViewRepresentable {
     }
     
 }
+#endif

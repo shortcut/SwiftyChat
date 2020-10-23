@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+
+#if os(iOS)
 import UIKit
 
 public struct ContentSizeThatFitsKey: PreferenceKey {
@@ -324,7 +326,7 @@ struct UITextViewWrapper: UIViewRepresentable {
         view.delegate = context.coordinator
 
         view.font = UIFont.preferredFont(forTextStyle: .body)
-        view.textColor = UIColor.label
+        view.textColor = LegacyColor.label
         view.backgroundColor = .clear
 
         let attrs = self.textAttributes
@@ -511,3 +513,7 @@ struct UITextViewWrapper: UIViewRepresentable {
         }
     }
 }
+
+#elseif os(macOS)
+import Cocoa
+#endif

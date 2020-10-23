@@ -26,7 +26,7 @@ public struct TextCell<Message: ChatMessage>: View {
     ]
     
     private var maxWidth: CGFloat {
-        size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
+        size.width * 0.75
     }
     
     private var action: AttributedTextTappedCallback {
@@ -39,6 +39,7 @@ public struct TextCell<Message: ChatMessage>: View {
             .fontWeight(cellStyle.textStyle.fontWeight)
             .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
             .lineLimit(nil)
+            .fixedSize(horizontal: true, vertical: true)
             .foregroundColor(cellStyle.textStyle.textColor)
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
@@ -56,6 +57,7 @@ public struct TextCell<Message: ChatMessage>: View {
             )
     }
     
+    #if os(iOS)
     private var attributedText: some View {
         let textStyle = cellStyle.attributedTextStyle
         
@@ -102,16 +104,18 @@ public struct TextCell<Message: ChatMessage>: View {
             )
         )
     }
+    #endif
     
+    #warning("handle")
     @ViewBuilder public var body: some View {
-        if AttributeDetective(
-            text: text,
-            enabledDetectors: enabledDetectors
-        ).doesContain() || text.containsHtml() {
-            attributedText
-        } else {
+//        if AttributeDetective(
+//            text: text,
+//            enabledDetectors: enabledDetectors
+//        ).doesContain() || text.containsHtml() {
+//            attributedText
+//        } else {
             defaultText
-        }
+//        }
     }
     
 }

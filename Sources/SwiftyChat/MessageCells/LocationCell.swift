@@ -45,15 +45,15 @@ public struct LocationCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder private var mapView: some View {
-        if #available(iOS 14.0, *) {
-            self.builtInMapView
-        } else {
-            self.uiViewRepresentableMapView
-        }
+//        if #available(iOS 14.0, *) {
+//            self.builtInMapView
+//        } else {
+            self.viewRepresentableMapView
+//        }
     }
     
     // MARK: - Wrapped Map view (for below iOS 14 versions)
-    private var uiViewRepresentableMapView: some View {
+    private var viewRepresentableMapView: some View {
         MapView(
             coordinate: CLLocationCoordinate2D(
                 latitude: location.latitude,
@@ -62,28 +62,29 @@ public struct LocationCell<Message: ChatMessage>: View {
         )
     }
     
-    @available(iOS 14.0, *)
-    private var builtInMapView: some View {
-        Map(
-            coordinateRegion: .constant(
-                MKCoordinateRegion(
-                    center: .init(latitude: location.latitude, longitude: location.longitude),
-                    span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
-                )
-            ),
-            interactionModes: MapInteractionModes.zoom,
-            showsUserLocation: false,
-            annotationItems: [
-                LocationRow(
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                )
-            ],
-            annotationContent: { place in
-                MapMarker(coordinate: place.coordinate)
-            }
-        )
-    }
+    #warning("handle")
+//    @available(iOS 14.0, *)
+//    private var builtInMapView: some View {
+//        Map(
+//            coordinateRegion: .constant(
+//                MKCoordinateRegion(
+//                    center: .init(latitude: location.latitude, longitude: location.longitude),
+//                    span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
+//                )
+//            ),
+//            interactionModes: MapInteractionModes.zoom,
+//            showsUserLocation: false,
+//            annotationItems: [
+//                LocationRow(
+//                    latitude: location.latitude,
+//                    longitude: location.longitude
+//                )
+//            ],
+//            annotationContent: { place in
+//                MapMarker(coordinate: place.coordinate)
+//            }
+//        )
+//    }
 
     private struct LocationRow: LocationItem, Identifiable {
         let id: String = UUID().uuidString

@@ -7,6 +7,26 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import UIKit
+#elseif os(macOS)
+import Cocoa
+#endif
+
+fileprivate func handleTableViewAppearance() {
+    #if os(iOS)
+    // To remove only extra separators below the list:
+    UITableView.appearance().tableFooterView = UIView()
+    // To remove all separators including the actual ones:
+    UITableView.appearance().separatorStyle = .none
+    
+    // To clear background colors to allow library user set himself
+    UITableView.appearance().backgroundColor = .clear
+    UITableViewCell.appearance().backgroundColor = .clear
+    #elseif os(macOS)
+    
+    #endif
+}
 
 public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
@@ -23,70 +43,68 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @available(iOS 14.0, *)
     @Binding private var scrollToBottom: Bool
     
+    #warning("handle ios")
     public var body: some View {
-        DeviceOrientationBasedView(
-            portrait: { GeometryReader { body(in: $0) } },
-            landscape: { GeometryReader { body(in: $0) } }
-        )
-        .environmentObject(OrientationInfo())
-        .edgesIgnoringSafeArea(.bottom)
+//        DeviceOrientationBasedView(
+//            portrait: { GeometryReader { body(in: $0) } },
+//            landscape: { GeometryReader { body(in: $0) } }
+//        )
+        GeometryReader { self.body(in: $0) }
+//        .environmentObject(OrientationInfo())
+//        .edgesIgnoringSafeArea(.bottom)
     }
     
     // MARK: - Body in geometry
+    #warning("Handle")
     private func body(in geometry: GeometryProxy) -> some View {
         ZStack(alignment: .bottom) {
                     
-            if #available(iOS 14.0, *) {
-                iOS14Body(in: geometry)
-                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-            } else {
+//            if #available(iOS 14.0, *) {
+//                iOS14Body(in: geometry)
+//                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
+//            } else {
                 iOS14Fallback(in: geometry)
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-            }
+//            }
 
             inputView()
 
         }
-        .keyboardAwarePadding()
-        .dismissKeyboardOnTappingOutside()
+//        .keyboardAwarePadding()
+//        .dismissKeyboardOnTappingOutside()
     }
     
-    @available(iOS 14.0, *)
-    private func iOS14Body(in geometry: GeometryProxy) -> some View {
-        ScrollView {
-            ScrollViewReader { proxy in
-                LazyVStack {
-                    ForEach(messages) { message in
-                        chatMessageCellContainer(in: geometry.size, with: message)
-                    }
-                }
-                .onChange(of: scrollToBottom) { value in
-                    if value {
-                        withAnimation {
-                            proxy.scrollTo(messages.last?.id)
-                        }
-                        scrollToBottom = false
-                    }
-                }
-            }
-        }
-        .background(Color.clear)
-    }
+    #warning("handle scrollviewreader")
+//    @available(iOS 14.0, *)
+//    private func iOS14Body(in geometry: GeometryProxy) -> some View {
+//        ScrollView {
+//            ScrollViewReader { proxy in
+//                LazyVStack {
+//                    ForEach(messages) { message in
+//                        chatMessageCellContainer(in: geometry.size, with: message)
+//                    }
+//                }
+//                .onChange(of: scrollToBottom) { value in
+//                    if value {
+//                        withAnimation {
+//                            proxy.scrollTo(messages.last?.id)
+//                        }
+//                        scrollToBottom = false
+//                    }
+//                }
+//            }
+//        }
+//        .background(Color.clear)
+//    }
     
+    #warning("handle appearance")
     private func iOS14Fallback(in geometry: GeometryProxy) -> some View {
         List(messages) { message in
-            chatMessageCellContainer(in: geometry.size, with: message)
+            self.chatMessageCellContainer(in: geometry.size, with: message)
         }
-        .onAppear {
-            // To remove only extra separators below the list:
-            UITableView.appearance().tableFooterView = UIView()
-            // To remove all separators including the actual ones:
-            UITableView.appearance().separatorStyle = .none
-            
-            // To clear background colors to allow library user set himself
-            UITableView.appearance().backgroundColor = .clear
-            UITableViewCell.appearance().backgroundColor = .clear
-        }
+//        .onAppear {
+//            handleTableViewAppearance()
+//        }
     }
     
     // MARK: - List Item
@@ -99,7 +117,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             onTextTappedCallback: onAttributedTextTappedCallback,
             onCarouselItemAction: onCarouselItemAction
         )
-        .onTapGesture { onMessageCellTapped(message) }
+        .onTapGesture { self.onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
         .modifier(AvatarModifier<Message, User>(message: message))
         .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
@@ -141,6 +159,13 @@ public extension ChatView {
         self._scrollToBottom = scrollToBottom
     }
     
+}
+
+public struct KokoView: View {
+    public init() { }
+    @ViewBuilder public var body: some View {
+        Color.red.frame(width: 100, height: 100)
+    }
 }
 
 public extension ChatView {

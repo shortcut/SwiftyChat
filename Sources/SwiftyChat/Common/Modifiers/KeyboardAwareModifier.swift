@@ -9,6 +9,8 @@
 import SwiftUI
 import Combine
 
+#if os(iOS)
+import UIKit
 public struct KeyboardAwareModifier: ViewModifier {
     
     @State private var keyboardHeight: CGFloat = 0
@@ -36,3 +38,4 @@ public struct KeyboardAwareModifier: ViewModifier {
     }
     
 }
+#endif

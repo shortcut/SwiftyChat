@@ -30,7 +30,7 @@ public struct TextCellStyle: CommonViewStyle {
         ),
         textPadding: CGFloat = 10,
         attributedTextStyle: AttributedTextStyle = AttributedTextStyle(),
-        cellBackgroundColor: Color = Color(UIColor.systemPurple).opacity(0.8),
+        cellBackgroundColor: Color = Color(LegacyColor.systemPurple).opacity(0.8),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
         cellBorderWidth: CGFloat = 1,

@@ -5,7 +5,11 @@
 //  Created by Enes Karaosman on 30.09.2020.
 //
 
+#if os(iOS)
 import UIKit
+#elseif os(macOS)
+import Cocoa
+#endif
 
 // https://gist.github.com/azimin/aa1a79aefa1cec031152fa63401d2292
 internal class AZTextFrameAttributes: NSObject {
@@ -29,12 +33,12 @@ internal class AZTextFrameAttributes: NSObject {
     
     // MARK: - Init
     
-    init(string: String, font: UIFont) {
+    init(string: String, font: LegacyFont) {
         self.string = string
         self.attributes = [NSAttributedString.Key.font: font]
     }
     
-    init(string: String, width: CGFloat, font: UIFont) {
+    init(string: String, width: CGFloat, font: LegacyFont) {
         self.string = string
         self.width = width
         self.attributes = [NSAttributedString.Key.font: font]

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+#warning("handle inputview")
+#if os(iOS)
 public struct BasicInputView: View {
     
     @Binding private var message: String
@@ -21,8 +23,8 @@ public struct BasicInputView: View {
                 NSAttributedString(
                     string: self.message,
                     attributes: [
-                        NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body),
-                        NSAttributedString.Key.foregroundColor: UIColor.label,
+                        NSAttributedString.Key.font: LegacyFont.preferredFont(forTextStyle: .body),
+                        NSAttributedString.Key.foregroundColor: LegacyColor.label,
                     ]
                 )
             },
@@ -46,9 +48,11 @@ public struct BasicInputView: View {
     }
 
     private var messageEditorHeight: CGFloat {
-        min(
+        #warning("handle")
+        return min(
             self.contentSizeThatFits.height,
-            0.25 * UIScreen.main.bounds.height
+//            0.25 * UIScreen.main.bounds.height
+            200
         )
     }
 
@@ -93,3 +97,4 @@ public struct BasicInputView: View {
     }
     
 }
+#endif

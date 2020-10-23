@@ -6,8 +6,15 @@
 //
 
 import SwiftUI
+#if os(iOS)
 import UIKit
+public typealias LegacyLabel = UILabel
+#elseif os(macOS)
+import Cocoa
+public typealias LegacyLabel = NSTextField
+#endif
 
+#if os(iOS)
 public class MessageLabel: UILabel {
 
     // MARK: - Private Properties
@@ -66,13 +73,13 @@ public class MessageLabel: UILabel {
         }
     }
 
-    open override var font: UIFont! {
+    open override var font: LegacyFont! {
         didSet {
             setTextStorage(attributedText, shouldParse: false)
         }
     }
 
-    open override var textColor: UIColor! {
+    open override var textColor: LegacyColor! {
         didSet {
             setTextStorage(attributedText, shouldParse: false)
         }
@@ -111,16 +118,16 @@ public class MessageLabel: UILabel {
         return size
     }
     
-    internal var messageLabelFont: UIFont?
+    internal var messageLabelFont: LegacyFont?
 
     private var attributesNeedUpdate = false
 
     // MARK: - Be aware attributes (dark/light mode)
     public static var defaultAttributes: [NSAttributedString.Key: Any] = {
         return [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.foregroundColor: LegacyColor.white,
             NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue,
-            NSAttributedString.Key.underlineColor: UIColor.white
+            NSAttributedString.Key.underlineColor: LegacyColor.white
         ]
     }()
 
@@ -551,3 +558,4 @@ internal enum MessageTextCheckingType {
     case transitInfoComponents([NSTextCheckingKey: String]?)
     case custom(pattern: String, match: String?)
 }
+#endif

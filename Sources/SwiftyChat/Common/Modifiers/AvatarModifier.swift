@@ -79,7 +79,11 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
         if let imageURL = user.avatarURL, currentStyle.imageStyle.imageSize.width > 0 {
             KFImage(imageURL).resizable()
         } else if let avatar = user.avatar, currentStyle.imageStyle.imageSize.width > 0 {
+            #if os(iOS)
             Image(uiImage: avatar).resizable()
+            #elseif os(macOS)
+            Image(nsImage: avatar).resizable()
+            #endif
         }
     }
     

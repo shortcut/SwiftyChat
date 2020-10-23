@@ -6,7 +6,11 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
+#elseif os(macOS)
+import Cocoa
+#endif
 
 /// Emoji helper
 internal extension Character {
@@ -55,9 +59,10 @@ internal extension String {
         return regex.firstMatch(in: self, options: [], range: range) != nil
     }
     
+    #if os(iOS)
     func frameSize(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> CGSize {
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.preferredFont(forTextStyle: .body)
+            .font: LegacyFont.preferredFont(forTextStyle: .body)
         ]
         let attributedText = NSAttributedString(string: self, attributes: attributes)
         let width = maxWidth != nil ? min(maxWidth!, CGFloat.greatestFiniteMagnitude) : CGFloat.greatestFiniteMagnitude
@@ -66,6 +71,7 @@ internal extension String {
         let rect = attributedText.boundingRect(with: constraintBox, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).integral
         return rect.size
     }
+    #endif
     
 }
 
@@ -85,7 +91,7 @@ internal extension NSAttributedString {
         let yourAttrStr = NSMutableAttributedString(attributedString: self)
         yourAttrStr.addAttribute(
             .font,
-            value: UIFont.systemFont(ofSize: fontSize),
+            value: LegacyFont.systemFont(ofSize: fontSize),
             range: NSMakeRange(0, yourAttrStr.length)
         )
         return yourAttrStr
