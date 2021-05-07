@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 internal extension UIFont {
     func withWeight(_ weight: UIFont.Weight) -> UIFont {
         let newDescriptor = fontDescriptor.addingAttributes([.traits: [
@@ -15,3 +16,4 @@ internal extension UIFont {
         return UIFont(descriptor: newDescriptor, size: pointSize)
     }
 }
+#endif

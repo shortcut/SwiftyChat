@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "SwiftyChat",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v13),
+        .macOS(.v11)
     ],
     products: [
         .library(
@@ -16,7 +17,7 @@ let package = Package(
     dependencies: [
         // Image downloading library
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "6.3.0"),
-        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.1.8"),
+        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.2.0"),
         .package(url: "https://github.com/wxxsw/VideoPlayer.git", from: "1.2.3")
     ],
     targets: [
@@ -27,7 +28,7 @@ let package = Package(
             dependencies: [
                 .byName(name: "Kingfisher"),
                 .byName(name: "SwiftUIEKtensions"),
-                .byName(name: "VideoPlayer")
+                .byName(name: "VideoPlayer", condition: .when(platforms: [.iOS]))
             ],
             exclude: ["Demo/Preview"]
         )

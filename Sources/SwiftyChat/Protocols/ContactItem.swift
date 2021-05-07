@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import class UIKit.UIImage
 
 /// Represents the data for a contact.
 public protocol ContactItem {

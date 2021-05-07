@@ -26,7 +26,11 @@ internal struct TextCell<Message: ChatMessage>: View {
     ]
     
     private var maxWidth: CGFloat {
+        #if os(iOS)
         size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
+        #else
+        size.width * 0.75
+        #endif
     }
     
     private var action: AttributedTextTappedCallback {
@@ -56,6 +60,7 @@ internal struct TextCell<Message: ChatMessage>: View {
             )
     }
     
+    #if canImport(UIKit)
     private var attributedText: some View {
         let textStyle = cellStyle.attributedTextStyle
         
@@ -104,8 +109,10 @@ internal struct TextCell<Message: ChatMessage>: View {
             )
         )
     }
+    #endif
     
     @ViewBuilder public var body: some View {
+        #if os(iOS)
         if text.containsHtml() ||
             AttributeDetective(
                 text: text,
@@ -116,6 +123,9 @@ internal struct TextCell<Message: ChatMessage>: View {
         } else {
             defaultText
         }
+        #else
+        defaultText
+        #endif
     }
     
 }

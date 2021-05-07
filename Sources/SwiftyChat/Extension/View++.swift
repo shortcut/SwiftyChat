@@ -8,6 +8,15 @@
 
 import SwiftUI
 
+#if os(macOS)
+import Cocoa
+
+public typealias UIImage = NSImage
+public typealias UIColor = NSColor
+public typealias UIFont  = NSFont
+public typealias UIFontDescriptor = NSFontDescriptor
+#endif
+
 internal func conditionalStack<Content: View>(isVStack: Bool, content: () -> Content) -> AnyView {
     if isVStack {
         return VStack(alignment: .leading, spacing: 8) { content() }.embedInAnyView()
@@ -15,10 +24,12 @@ internal func conditionalStack<Content: View>(isVStack: Bool, content: () -> Con
     return HStack(spacing: 8) { content() }.embedInAnyView()
 }
 
-internal extension View {
-    
-    func keyboardAwarePadding() -> some View {
-        ModifiedContent(content: self, modifier: KeyboardAwareModifier())
+extension Image {
+    @ViewBuilder static func getImage(from crossPlatformImage: UIImage) -> Image {
+        #if os(iOS)
+        Image(uiImage: crossPlatformImage)
+        #elseif os(macOS)
+        Image(nsImage: crossPlatformImage)
+        #endif
     }
-    
 }

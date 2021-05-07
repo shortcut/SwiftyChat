@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 internal struct AttributedTextCell: UIViewRepresentable {
 
     public typealias UILabel = MessageLabel
@@ -30,3 +31,4 @@ internal struct AttributedTextCell: UIViewRepresentable {
         }
     }
 }
+#endif

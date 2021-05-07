@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 public struct ContentSizeThatFitsKey: PreferenceKey {
@@ -511,3 +512,4 @@ internal struct UITextViewWrapper: UIViewRepresentable {
         }
     }
 }
+#endif

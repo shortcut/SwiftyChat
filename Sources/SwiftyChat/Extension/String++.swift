@@ -6,7 +6,8 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-import UIKit
+import Foundation
+import CoreGraphics
 
 /// Emoji helper
 internal extension Character {

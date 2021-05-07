@@ -6,6 +6,8 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+#if os(iOS)
+
 import SwiftUI
 import MapKit
 
@@ -40,5 +42,5 @@ internal struct MapView: UIViewRepresentable {
         )
         mapView.setRegion(coordinateRegion, animated: true)
     }
-    
 }
+#endif

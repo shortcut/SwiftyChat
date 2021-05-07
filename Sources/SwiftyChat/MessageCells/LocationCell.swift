@@ -45,24 +45,20 @@ internal struct LocationCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder private var mapView: some View {
-        if #available(iOS 14.0, *) {
-            self.builtInMapView
+        if #available(iOS 14.0, OSX 11, *) {
+            builtInMapView
         } else {
-            self.uiViewRepresentableMapView
+            #if os(iOS)
+            MapView(
+                coordinate: CLLocationCoordinate2D(
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                )
+            )
+            #endif
         }
     }
     
-    // MARK: - Wrapped Map view (for below iOS 14 versions)
-    private var uiViewRepresentableMapView: some View {
-        MapView(
-            coordinate: CLLocationCoordinate2D(
-                latitude: location.latitude,
-                longitude: location.longitude
-            )
-        )
-    }
-    
-    @available(iOS 14.0, *)
     private var builtInMapView: some View {
         Map(
             coordinateRegion: .constant(
@@ -93,5 +89,4 @@ internal struct LocationCell<Message: ChatMessage>: View {
             CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         }
     }
-    
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 internal class MessageLabel: UILabel {
@@ -551,3 +552,4 @@ internal enum MessageTextCheckingType {
     case transitInfoComponents([NSTextCheckingKey: String]?)
     case custom(pattern: String, match: String?)
 }
+#endif

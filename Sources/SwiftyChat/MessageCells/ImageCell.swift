@@ -37,7 +37,7 @@ internal struct ImageLoadingKindCell: View {
         let _height = uiImage.size.height
         let isLandscape = _width > _height
         
-        Image(uiImage: uiImage)
+        Image.getImage(from: uiImage)
             .resizable()
             .aspectRatio(_width / _height, contentMode: isLandscape ? .fit : .fill)
             .frame(width: width, height: height)

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+#if os(iOS)
+
 // Use below approach, when handle pushing content up when keyboard appears.
 // Investigate keyboardAwarePadding() modifier, it does actually its job
 // But some how its broken with current as-is
@@ -73,3 +75,4 @@ internal struct DismissKeyboardOnTappingOutside: ViewModifier {
         }
     }
 }
+#endif

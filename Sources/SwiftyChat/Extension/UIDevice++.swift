@@ -6,6 +6,7 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 public extension UIDevice {
@@ -21,3 +22,4 @@ public extension UIDevice {
     }
     
 }
+#endif

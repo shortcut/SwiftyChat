@@ -5,6 +5,7 @@
 //  Created by Enes Karaosman on 30.09.2020.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 // https://gist.github.com/azimin/aa1a79aefa1cec031152fa63401d2292
@@ -105,3 +106,4 @@ internal final class AZTextFrame: NSObject {
         }
     }
 }
+#endif

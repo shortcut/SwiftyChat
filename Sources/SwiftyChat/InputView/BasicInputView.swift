@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 public struct BasicInputView: View {
     
     @Binding private var message: String
@@ -47,7 +48,7 @@ public struct BasicInputView: View {
 
     private var messageEditorHeight: CGFloat {
         min(
-            self.contentSizeThatFits.height,
+            contentSizeThatFits.height,
             0.25 * UIScreen.main.bounds.height
         )
     }
@@ -91,5 +92,79 @@ public struct BasicInputView: View {
             }
         }
     }
-    
 }
+#endif
+
+#if os(macOS)
+public struct BasicInputView: View {
+    
+    @Binding private var message: String
+    @Binding private var isEditing: Bool
+    private let placeholder: String
+
+    @State private var contentSizeThatFits: CGSize = .zero
+
+    private var onCommit: ((ChatMessageKind) -> Void)?
+    
+    public init(
+        message: Binding<String>,
+        isEditing: Binding<Bool>,
+        placeholder: String = "",
+        onCommit: @escaping (ChatMessageKind) -> Void
+    ) {
+        self._message = message
+        self.placeholder = placeholder
+        self._isEditing = isEditing
+        self._contentSizeThatFits = State(initialValue: .zero)
+        self.onCommit = onCommit
+    }
+
+    private var messageEditorHeight: CGFloat {
+        min(
+            contentSizeThatFits.height,
+            240
+        )
+    }
+
+    private var messageEditorView: some View {
+//        MultilineTextField(
+//            attributedText: self.internalAttributedMessage,
+//            placeholder: placeholder,
+//            isEditing: self.$isEditing
+//        )
+        TextEditor(text: $message)
+//        .onPreferenceChange(ContentSizeThatFitsKey.self) {
+//            self.contentSizeThatFits = $0
+//        }
+        .frame(height: self.messageEditorHeight)
+    }
+
+    private var sendButton: some View {
+        Button(action: {
+            self.onCommit?(.text(message))
+            self.message.removeAll()
+        }, label: {
+            Circle().fill(Color(.systemBlue))
+                .frame(width: 36, height: 36)
+                .overlay(
+                    Image(systemName: "paperplane.fill")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .offset(x: -1, y: 1)
+                        .padding(8)
+                )
+        })
+        .disabled(message.isEmpty)
+    }
+
+    public var body: some View {
+        VStack {
+            Divider()
+            HStack {
+                self.messageEditorView
+                self.sendButton
+            }
+        }
+    }
+}
+#endif

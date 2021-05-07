@@ -22,7 +22,13 @@ public struct ContactCellStyle: CommonViewStyle {
     public let cellShadowColor: Color
     
     public init(
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.45 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = {
+            #if os(iOS)
+            $0.width * (UIDevice.isLandscape ? 0.45 : 0.75)
+            #else
+            $0.width * 0.3
+            #endif
+        },
         imageStyle: CommonImageStyle = CommonImageStyle(
             imageSize: CGSize(width: 50, height: 50),
             cornerRadius: 25,
@@ -50,6 +56,4 @@ public struct ContactCellStyle: CommonViewStyle {
         self.cellShadowRadius = cellShadowRadius
         self.cellShadowColor = cellShadowColor
     }
-    
-    
 }

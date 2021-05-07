@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
+#if os(iOS)
 internal struct KeyboardAwareModifier: ViewModifier {
     
     @State private var keyboardHeight: CGFloat = 0
@@ -36,3 +37,12 @@ internal struct KeyboardAwareModifier: ViewModifier {
     }
     
 }
+
+internal extension View {
+    
+    func keyboardAwarePadding() -> some View {
+        ModifiedContent(content: self, modifier: KeyboardAwareModifier())
+    }
+    
+}
+#endif
