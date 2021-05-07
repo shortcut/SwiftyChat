@@ -119,24 +119,10 @@ public struct BasicInputView: View {
         self.onCommit = onCommit
     }
 
-    private var messageEditorHeight: CGFloat {
-        min(
-            contentSizeThatFits.height,
-            240
-        )
-    }
-
     private var messageEditorView: some View {
-//        MultilineTextField(
-//            attributedText: self.internalAttributedMessage,
-//            placeholder: placeholder,
-//            isEditing: self.$isEditing
-//        )
         TextEditor(text: $message)
-//        .onPreferenceChange(ContentSizeThatFitsKey.self) {
-//            self.contentSizeThatFits = $0
-//        }
-        .frame(height: self.messageEditorHeight)
+            .font(.system(size: 17, weight: .semibold))
+            .frame(height: 60)
     }
 
     private var sendButton: some View {

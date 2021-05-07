@@ -138,25 +138,11 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
-    @State private var contentSizeThatFits: CGSize = .zero
-    private var messageEditorHeight: CGFloat {
-        min(
-            contentSizeThatFits.height,
-            240
-        )
-    }
-    
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
                 chatView(in: geometry)
                 inputView()
-//                    .onPreferenceChange(ContentSizeThatFitsKey.self) {
-//                        contentSizeThatFits = $0
-//                    }
-                    .frame(height: messageEditorHeight)
-                    .padding(.bottom, 12)
-                
                 PIPVideoCell<Message>()
             }
         }
@@ -182,7 +168,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             }
         }
         .background(Color.clear)
-        .padding(.bottom, messageEditorHeight + 30)
+        .padding(.bottom, 100)
     }
 }
 #endif
