@@ -22,6 +22,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     private var inset: EdgeInsets
     @Binding private var scrollToBottom: Bool
+    @Binding private var shouldShowLoadMoreButton: Bool
+    private var loadMoreAction: () -> Void
     @State private var isKeyboardActive = false
     
     @State private var contentSizeThatFits: CGSize = .zero
@@ -57,6 +59,11 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         ScrollView(.vertical, showsIndicators: false) {
             ScrollViewReader { proxy in
                 LazyVStack {
+                    if shouldShowLoadMoreButton {
+                        Button("Load more") {
+                            loadMoreAction()
+                        }
+                    }
                     ForEach(messages) { message in
                         chatMessageCellContainer(in: geometry.size, with: message)
                     }
@@ -66,6 +73,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
                 .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                 .onChange(of: scrollToBottom) { value in
+                    print("On change - \(value). scrollToBottom - \(scrollToBottom)")
                     if value {
                         withAnimation {
                             proxy.scrollTo("bottom")
@@ -122,17 +130,22 @@ public extension ChatView {
     /// - Parameters:
     ///   - messages: Messages to display
     ///   - scrollToBottom: set to `true` to scrollToBottom
+    ///   - showLoadMoreButton: set to `false` to show a load-more button on top
     ///   - inputView: inputView view to provide message
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
         inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init()
+        inset: EdgeInsets = .init(),
+        showShowLoadMoreButton: Binding<Bool>,
+        loadMoreAction: @escaping () -> Void
     ) {
         _messages = messages
         self.inputView = inputView
         _scrollToBottom = scrollToBottom
         self.inset = inset
+        _shouldShowLoadMoreButton = showShowLoadMoreButton
+        self.loadMoreAction = loadMoreAction
     }
 }
 
