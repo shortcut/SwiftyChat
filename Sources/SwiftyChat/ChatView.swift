@@ -23,6 +23,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var inset: EdgeInsets
     @Binding private var scrollToBottom: Bool
     @Binding private var shouldShowLoadMoreButton: Bool
+    private var topMessageItemId: String?
     private var loadMoreAction: () -> Void
     @State private var isKeyboardActive = false
     
@@ -61,7 +62,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 LazyVStack {
                     if shouldShowLoadMoreButton {
                         Button("Load more") {
+                            let scrollToId = topMessageItemId!
                             loadMoreAction()
+                            proxy.scrollTo(scrollToId)
                         }
                     }
                     ForEach(messages) { message in
@@ -145,6 +148,13 @@ public extension ChatView {
         _scrollToBottom = scrollToBottom
         self.inset = inset
         _shouldShowLoadMoreButton = showShowLoadMoreButton
+        if !messages.isEmpty {
+            if #available(iOS 15.0, *) {
+                 self.topMessageItemId = messages[1].id as? String
+            } else {
+                // Fallback on earlier versions
+            }
+        }
         self.loadMoreAction = loadMoreAction
     }
 }
