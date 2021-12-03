@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Kingfisher
+import MapKit
 
 internal struct ImageLoadingKindCell: View {
     
@@ -17,16 +18,19 @@ internal struct ImageLoadingKindCell: View {
     
     init(_ kind: ImageLoadingKind, width: CGFloat? = nil, height: CGFloat? = nil) {
         
-        let path =  ImageCache.default.cachePath(forKey: url.cacheKey)
-        
-        url.cacheKey
-        if let image = UIImage.init(contentsOfFile: path) {
-            height = image.size.height * (width / image.size.width)
-        }
-        
         self.imageLoadingType = kind
         self.width = width
-        self.height = height
+        
+        if case .remote(let url) = kind, let width = width {
+            let path = ImageCache.default.cachePath(forKey: url.cacheKey)
+            if let image = UIImage.init(contentsOfFile: path) {
+                self.height = image.size.height * (width / image.size.width)
+            } else {
+                self.height = height
+            }
+        } else {
+            self.height = height
+        }
     }
     
     var body: some View {
