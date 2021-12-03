@@ -16,6 +16,14 @@ internal struct ImageLoadingKindCell: View {
     private let height: CGFloat?
     
     init(_ kind: ImageLoadingKind, width: CGFloat? = nil, height: CGFloat? = nil) {
+        
+        let path =  ImageCache.default.cachePath(forKey: url.cacheKey)
+        
+        url.cacheKey
+        if let image = UIImage.init(contentsOfFile: path) {
+            height = image.size.height * (width / image.size.width)
+        }
+        
         self.imageLoadingType = kind
         self.width = width
         self.height = height
@@ -46,12 +54,6 @@ internal struct ImageLoadingKindCell: View {
     // MARK: - case Remote Image
     @ViewBuilder private func remoteImage(url: URL) -> some View {
         
-        let path =  ImageCache.default.cachePath(forKey: url.cacheKey)
-        
-        url.cacheKey
-        if let image = UIImage.init(contentsOfFile: path) {
-            height = image.size.height * (width / image.size.width)
-        }
         /**
          KFImage(url)
          .onSuccess(perform: { (result) in
