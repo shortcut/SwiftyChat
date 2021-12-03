@@ -45,6 +45,10 @@ internal struct ImageLoadingKindCell: View {
     
     // MARK: - case Remote Image
     @ViewBuilder private func remoteImage(url: URL) -> some View {
+        
+        if let image = UIImage.init(contentsOfFile: path) {
+            height = image.size.height * (width / image.size.width)
+        }
         /**
          KFImage(url)
          .onSuccess(perform: { (result) in
