@@ -46,6 +46,9 @@ internal struct ImageLoadingKindCell: View {
     // MARK: - case Remote Image
     @ViewBuilder private func remoteImage(url: URL) -> some View {
         
+        let path = cachePath(forKey: meal.url.cacheKey)
+        
+        url.cacheKey
         if let image = UIImage.init(contentsOfFile: path) {
             height = image.size.height * (width / image.size.width)
         }
